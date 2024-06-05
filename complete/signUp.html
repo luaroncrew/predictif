@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création de compte</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <a href="index.html" class="logo">
+            <div style="display: flex; flex-direction: row; height: 100%; align-items: center">
+                <div>
+                    <img class="circular-image" src="../static/logo.png" alt="Circular Image">
+                </div>
+                <div>
+                    Predictif
+                </div>
+            </div>
+        </a>
+        <div>
+            <a href="login.html" class="btn-secondary">Connexion</a>
+            <a href="signUp.html" class="btn">S'inscrire</a>
+        </div>
+    </div>
+    <div class="main-container">
+        <h1 class="headline">Création compte</h1>
+        <div class="sign-up-fields-container">
+            <div class="inputs-column">
+                <div class="input-field-container">
+                    <label><b>Prénom</b></label>
+                    <input
+                            type="text"
+                            id="firstName"
+                            name="prenom"
+                            value="kiki"
+                            required
+                            class="predictif-input-field">
+                    <label class="input-label-additional-info">Entrer votre prénom</label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Email</b></label>
+                    <input
+                            class="predictif-input-field"
+                            type="email"
+                            id="email"
+                            name="email"
+                            value="lekikidu69@insa-lyon.fr"
+                            required>
+                    <label class="input-label-additional-info">Entrer votre email</label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Téléphone</b></label>
+                    <input
+                            class="predictif-input-field"
+                            type="tel"
+                            id="phoneNumber"
+                            name="telephone"
+                            value="0600000110"
+                            required
+                            pattern="[0-9]{10}">
+
+                    <label class="input-label-additional-info">Entrer votre téléphone</label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Mot de passe</b></label>
+                    <input
+                            class="predictif-input-field"
+                            type="password"
+                            id="password"
+                            name="motdepasse"
+                            value="password"
+                            required>
+
+                    <label class="input-label-additional-info">Entrer votre mot de passe</label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Confirmation du mot de passe</b></label>
+                    <input
+                            class="predictif-input-field"
+                            type="password"
+                            id="passwordConfirmation"
+                            name="confirmmotdepasse"
+                            value="password"
+                            required>
+                    <label class="input-label-additional-info">Confirmation du mot de passe</label>
+                </div>
+            </div>
+            <div class="inputs-column">
+                <div class="input-field-container">
+                    <label><b>Nom</b></label>
+                    <input
+                            class="predictif-input-field"
+                            type="text"
+                            id="surname"
+                            name="nom"
+                            value="makarov"
+                            required>
+                    <label class="input-label-additional-info">Entrer votre nom</label>
+                </div>
+
+                <div class="input-field-container">
+                    <label><b>Date de naissance</b></label>
+                    <input
+                            class="predictif-input-field"
+                            type="date"
+                            id="birthDate"
+                            name="date_naissance"
+                            value="2003-12-12"
+                            required>
+
+                    <label class="input-label-additional-info">Entrer votre date de naissance</label>
+                </div>
+
+
+                <div class="input-field-container">
+                    <label><b>Adresse</b></label>
+                    <input
+                            class="predictif-input-field"
+                            type="text"
+                            id="address"
+                            name="adresse"
+                            value="20 Av. Albert Einstein, 69100 Villeurbanne"
+                            required>
+                    <label class="input-label-additional-info">Entrer votre adresse</label>
+                </div>
+
+                <div class="input-field-container">
+                    <label><b>Genre</b></label>
+                    <select
+                            class="predictif-input-field"
+                            id="gender"
+                            name="genre"
+                            required>
+                        <option value="male">Masculin</option>
+                        <option value="female">Féminin</option>
+                        <option value="Kirill">Kirill</option>
+                        <option value="pas decidé">Pas decidé</option>
+                        <option value="En cours...">En cours...</option>
+                        <option value="other">Autre</option>
+                        <option value="prefer_not_to_say">Préfère ne pas dire</option>
+                    </select>
+                    <label class="input-label-additional-info">Choisir votre genre</label>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: row; width: 850px; justify-content: flex-end">
+            <button class="btn" id="submit" style="margin-right: 40px"> S'inscrire </button>
+        </div>
+        <p class="notification"
+           id="notification">
+        </p>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#submit').on('click', function () { // Fonction appelée lors du clic sur le bouton
+                console.log("clic sur le bouton d'inscription"); // LOG dans Console Javascript
+                // Récupération de la valeur des champs du formulaire
+                var firstNameField = $('#firstName').val();
+                var surnameField = $('#surname').val();
+                var passwordField = $('#password').val();
+                var passwordConfirmationField = $('#passwordConfirmation').val();
+                var addressField = $('#address').val();
+                var birthDate = $('#birthDate').val();
+                var emailField = $('#email').val();
+                var phoneNumberField = $('#phoneNumber').val();
+                var genderField = $('#gender').val();
+
+
+                if (passwordField !== passwordConfirmationField) {
+                    $('#notification').html("Les mots de passe ne correspondent pas"); // Message pour le paragraphe de notification
+                    return;
+                }
+                // Disable the button
+                $('#submit').prop('disabled', true);
+
+                // Appel AJAX
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'register',
+                        firstName: firstNameField,
+                        surname: surnameField,
+                        password: passwordField,
+                        address: addressField,
+                        birthDate: birthDate,
+                        email: emailField,
+                        phoneNumber: phoneNumberField,
+                        gender: genderField,
+                    },
+                    dataType: 'json'
+                })
+                    .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('Response on submit', response); // LOG dans Console Javascript
+                        if (response.success) {
+                            $('#notification').html("Inscription OK");
+                            document.location.href = "login.html";
+                        }
+                        else {
+                            $('#notification').html("Erreur d'inscription: " + response.message);
+                            $('#submit').prop('disabled', false);
+
+                        }
+                    })
+                    .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error', error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                        $('#submit').prop('disabled', false);
+                    })
+                    .always(function () { // Fonction toujours appelée
+
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>

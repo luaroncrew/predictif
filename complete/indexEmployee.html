@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Employee</title>
+    <!-- Librairie Javascript: jQuery (v3.4.1) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <script>
+        // Get the profile to check if we can be here
+        $.ajax({
+            url: './ActionServlet',
+            method: 'POST',
+            data: {
+                "todo": "getProfile"
+            },
+            dataType: 'json'
+        })
+            .done(function (response) {
+                console.log('Response', response);
+                if (response.logged_in) {
+                    console.log("Connected as " + response.person.first_name);
+                    if (response.client_type === "employee") {
+                        console.log("Employee");
+                    } else {
+                        alert("vous n'êtes pas un employé");
+                        console.log("Not an employee");
+                        window.location = "login.html";
+                    }
+                } else {
+                    alert("vous n'êtes pas connecté");
+                    console.log("Not connected");
+                    window.location = "login.html";
+                }
+            })
+    </script>
+
+    <div class="header"
+         style="display: flex; flex-direction: row; justify-content: space-between; color: white">
+        <a href="index.html" class="logo">
+            <div style="display: flex; flex-direction: row; height: 100%; align-items: center">
+                <div>
+                    <img class="circular-image" src="../static/logo.png" alt="Circular Image">
+                </div>
+                <div>
+                    Predictif
+                </div>
+            </div>
+        </a>
+        <div>
+            <a class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+                Tableau de bord
+            </a>
+            <a class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+                Statistiques
+            </a>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+            <a class="btn-secondary" style="margin-right: 10px">Deconnexion</a>
+            <a href="selfProfile.html">
+                <img src="../static/medium-example2.png" style="border-radius: 50%; height: 36px; width: 36px" alt="Avatar">
+            </a>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <h1 class="headline">Tableau de bord</h1>
+        <div style="margin-left: 70px; margin-right: 70px; width: 1000px">
+            <h2 style="color: black; padding-top: 30px">Consultation en cours</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Medium</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="on-wait-table-body" style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px">
+                    <tr style="color: black; background: white">
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: center">
+                <button class="btn" id="startConsultation" disabled>Demarrer consultation -></button>
+            </div>
+            <h2 style="color: black; margin-top: 80px">Historique de mes consultations</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Medium</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="history-table-body" style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Disable the button by default, for some reason it isnt disabled when refreshing the page
+            $('#startConsultation').prop('disabled', true);
+
+            // Fill the table with the consultations dynamically
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    "todo": "getConsultations"
+                },
+                cache: false,
+                dataType: 'json'
+            })
+                .done(function (response) {
+                    console.log('Response', response);
+                    if (response.consultations) {
+                        console.log("Consultations", response.consultations);
+                        var wait_table = $("#on-wait-table-body");
+                        var history_table = $("#history-table-body");
+                        response.consultations.forEach(consultation => {
+                            let curr_table = consultation.end_date != null ? history_table : wait_table;
+                            let newRow = document.createElement("tr");
+                            newRow.style.color = "black";
+                            newRow.style.background = "white";
+
+                            let status = "En attente";
+                            if (consultation.end_date != null) {
+                                status = "Fini";
+                            } else if (consultation.start_date != null) {
+                                status = "En cours";
+                            }
+
+                            let button_text = (consultation.end_date == null && consultation.start_date != null) ? "Rejoindre" : "Voir fiche";
+                            newRow.innerHTML = `
+                                <td><b>${consultation.medium_name}</b></td>
+                                <td>${consultation.start_date || "N/A"}</td>
+                                <td>${consultation.client_name}</td>
+                                <td>${status}</td>
+                                <td><a target="_blank" href="./clientProfile.html?client_id=${consultation.client_id}" class="btn">${button_text}</a></td>
+                            `;
+
+                            curr_table.append(newRow);
+
+                            // Enable the button if there is a consultation waiting
+                            if (consultation.end_date == null && consultation.start_date == null) {
+                                console.log("Consultation en attente", consultation);
+                                $('#startConsultation').prop('disabled', false);
+                                $('#startConsultation').attr('data-consultation-id', consultation.id);
+                            }
+                        });
+                    }
+                })
+        });
+
+    
+        $(document).ready(function () {
+            //! Start consultation button
+            $('#startConsultation').on('click', function () { // Fonction appelée lors du clic sur le bouton
+                console.log("clic sur le bouton d'inscription"); // LOG dans Console Javascript
+                // Récupération de la valeur des champs du formulaire
+                var onWaitConsultationId = $('#startConsultation').attr('data-consultation-id');
+                console.log("Consultation ID", onWaitConsultationId);
+
+                // Appel AJAX
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'startConsultation',
+                        consultationId: onWaitConsultationId,
+                    },
+                    dataType: 'json'
+                })
+                    .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('', response); // LOG dans Console Javascript
+                        if (response.success) {
+                            alert("Consultation démarrée");
+                            document.location.reload(true);
+                        }
+                        else {
+                            alert("Erreur lors du démarrage de la consultation: " + response.message);
+                        }
+                    })
+                    .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error', error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+            });
+        });
+    </script>
+
+</body>
+
+</html>

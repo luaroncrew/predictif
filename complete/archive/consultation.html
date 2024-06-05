@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Employee</title>
+    <!-- Librairie Javascript: jQuery (v3.4.1) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #1F2A37;
+            border-bottom: 1px solid #ddd;
+            color: #190f2c;
+            height: 50px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        main h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        main p {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            color: white;
+            /*background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(254, 164, 234) 100%);*/
+            background: #fcedff;
+            font-family: Arial, sans-serif;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        /* table related */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            background: #f7f7f7;
+        }
+
+        thead {
+            color: #6B7280;
+            border-bottom: solid black 1px;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            background-color: #5D5FEF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #4a4aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // Get the profile to check if we can be here
+        $.ajax({
+            url: './ActionServlet',
+            method: 'POST',
+            data: {
+                "todo": "getProfile"
+            },
+            dataType: 'json'
+        })
+            .done(function (response) {
+                console.log('Response', response);
+                if (response.logged_in) {
+                    console.log("Connected as " + response.person.first_name);
+                    if (response.client_type === "employee") {
+                        console.log("Employee");
+                    } else {
+                        alert("vous n'êtes pas un employé");
+                        console.log("Not an employee");
+                        window.location = "login.html";
+                    }
+                } else {
+                    alert("vous n'êtes pas connecté");
+                    console.log("Not connected");
+                    window.location = "login.html";
+                }
+            })
+    </script>
+
+    <header style="display: flex; flex-direction: row; justify-content: space-between; color: white">
+        <div class="logo" style="font-size: 25px;"><a href="./index.html">Predictif</a></div>
+        <div>
+            <a style="margin-left: 10px; margin-right: 10px">
+                Tableau de bord
+            </a>
+            <a style="margin-left: 10px; margin-right: 10px">
+                Statistiques
+            </a>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+            <a style="margin-right: 10px">Deconnexion</a>
+
+            <img src="img.png" style="border-radius: 50%; height: 36px; width: 36px" alt="Avatar">
+
+        </div>
+    </header>
+
+    <div style="margin-left: 70px; margin-right: 70px; height: 1000px">
+        <h1 style="color: black">Tableau de bord</h1>
+        <h2 style="color: black; padding-top: 30px">Consultation en cours</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medium</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="on-wait-table-body" style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px">
+                    <tr style="color: black; background: white">
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: center">
+            <button class="btn" id="startConsultation" disabled>Demarrer consultation -></button>
+        </div>
+        <h2 style="color: black">Historique de mes consultations</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medium</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="history-table-body" style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Fill the table with the consultations dynamically
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    "todo": "getConsultations"
+                },
+                dataType: 'json'
+            })
+                .done(function (response) {
+                    console.log('Response', response);
+                    if (response.consultations) {
+                        console.log("Consultations", response.consultations);
+                        var wait_table = $("#on-wait-table-body");
+                        var history_table = $("#history-table-body");
+                        response.consultations.forEach(consultation => {
+                            let curr_table = consultation.end_date != null ? history_table : wait_table;
+                            let newRow = document.createElement("tr");
+                            newRow.style.color = "black";
+                            newRow.style.background = "white";
+
+                            let status = "En attente";
+                            if (consultation.end_date != null) {
+                                status = "Fini";
+                            } else if (consultation.start_date != null) {
+                                status = "En cours";
+                            }
+
+                            newRow.innerHTML = `
+                                <td><b>${consultation.medium_name}</b></td>
+                                <td>${consultation.start_date || "N/A"}</td>
+                                <td>${consultation.client_name}</td>
+                                <td>${status}</td>
+                                <td><a href="#" class="btn">Voir fiche</a></td>
+                            `;
+                            curr_table.append(newRow);
+
+                            if (consultation.end_date == null) {
+                                $('#startConsultation').prop('disabled', false);
+                                $('#startConsultation').attr('data-consultation-id', consultation.id);
+                            }
+                        });
+                    }
+                })
+        });
+
+        $(document).ready(function () {
+            $('#startConsultation').on('click', function () { // Fonction appelée lors du clic sur le bouton
+                console.log("clic sur le bouton d'inscription"); // LOG dans Console Javascript
+                // Récupération de la valeur des champs du formulaire
+                var onWaitConsultationId = $('#startConsultation').attr('data-consultation-id');
+                console.log("Consultation ID", onWaitConsultationId);
+
+                // Appel AJAX
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'startConsultation',
+                        consultationId: onWaitConsultationId,
+                    },
+                    cache: false, // Can't believe this isn't the default
+                    dataType: 'json'
+                })
+                    .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        if (response.success) {
+                            alert("Consultation démarrée");
+                            document.location.href = "index.html";
+                        }
+                        else {
+                            alert("Erreur lors du démarrage de la consultation: " + response.message);
+                        }
+                    })
+                    .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error', error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+            });
+        });
+    </script>
+
+</body>
+
+</html>

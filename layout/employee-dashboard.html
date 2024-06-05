@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="../static/styles.css">
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <style>
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                background-color: #1F2A37;
+                border-bottom: 1px solid #ddd;
+                color: #190f2c;
+                height: 50px;
+            }
+            .nav-links a:hover {
+                text-decoration: underline;
+            }
+            main {
+                text-align: center;
+                padding: 50px 20px;
+            }
+            main h1 {
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+            main p {
+                font-size: 18px;
+                color: #666;
+                max-width: 600px;
+                margin: 0 auto 40px;
+            }
+
+            /* Reset CSS */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                color: white;
+                /*background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(254, 164, 234) 100%);*/
+                background: #fcedff;
+                font-family: Arial, sans-serif;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+                vertical-align: middle;
+                display: inline-block;
+            }
+
+            /* table related */
+            .table-container {
+                width: 100%;
+                overflow-x: auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                border-radius: 8px;
+                background: #f7f7f7;
+            }
+            thead {
+                color: #6B7280;
+                border-bottom: solid black 1px;
+            }
+            th, td {
+                padding: 12px 15px;
+                text-align: left;
+            }
+            th {
+                font-weight: bold;
+            }
+            .btn {
+                padding: 8px 12px;
+                background-color: #5D5FEF;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-block;
+            }
+            .btn:hover {
+                background-color: #4a4aaa;
+            }
+
+        </style>
+    </head>
+<body>
+<div class="header" style="display: flex; flex-direction: row; justify-content: space-between; color: white">
+    <div class="logo" style="font-size: 25px;">Predictif</div>
+    <div>
+        <a class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+            Tableau de bord
+        </a>
+        <a class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+            Statistiques
+        </a>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+        <a class="btn-secondary" style="margin-right: 10px">Deconnexion</a>
+        <img src="../static/medium-example2.png" style="border-radius: 50%; height: 36px; width: 36px" alt="Avatar">
+    </div>
+</div>
+
+<div style="padding-top: 100px; margin-left: 70px; margin-right: 70px; height: 1000px">
+    <h1 style="color: black">Tableau de bord</h1>
+    <h2 style="color: black; padding-top: 30px">Consultation en cours</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Medium</th>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="on-wait-table-body" style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px">
+            <tr style="color: black; background: white">
+                <td>Emily <b>Davis</b></td>
+                <td>2024-05-26</td>
+                <td>Matthieu <b>Maranzana</b></td>
+                <td>Completed</td>
+                <td><a href="#" class="btn">View</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: center">
+        <button class="btn">Demarrer consultation -></button>
+    </div>
+    <h2 style="color: black; padding-top: 100px;">Historique de mes consultations</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Medium</th>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="history-table-body" style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px">
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+
+<script>
+
+    // passed consultations
+    const consultations = [
+        {
+            mediumFirstName: "Emily",
+            mediumLastName: "Davis",
+            date: "2024-05-26",
+            clientFirstName: "Matthieu",
+            clienLastName: "Maranzana",
+            status: "Validée"
+        },
+        {
+            mediumFirstName: "Emily",
+            mediumLastName: "Davis",
+            date: "2024-05-26",
+            clientFirstName: "Matthieu",
+            clienLastName: "Maranzana",
+            status: "Validée"
+        },
+        {
+            mediumFirstName: "Emily",
+            mediumLastName: "Davis",
+            date: "2024-05-26",
+            clientFirstName: "Matthieu",
+            clienLastName: "Maranzana",
+            status: "Validée"
+        },
+    ];
+
+
+    // consultation on wait
+    const consultationsOnWait = [
+        {
+            id: 134,
+            mediumFirstName: "Emily",
+            mediumLastName: "Davis",
+            date: "2024-05-26",
+            clientFirstName: "Matthieu",
+            clienLastName: "Maranzana",
+            status: "Validée"
+        },
+    ]
+
+    // fill the table with the passed consultations
+    function populateConsultationsHistoryTable() {
+        const tableBody = document.querySelector("#history-table-body");
+        consultations.forEach(consultation => {
+            const newRow = document.createElement("tr");
+            newRow.style.color = "black";
+            newRow.style.background = "white";
+
+            newRow.innerHTML = `
+                <td>${consultation.mediumFirstName} <b>${consultation.mediumLastName}</b></td>
+                <td>${consultation.date}</td>
+                <td>${consultation.client}</td>
+                <td>${consultation.status}</td>
+                <td><a href="#" class="btn">Voir fiche</a></td>
+            `;
+
+            tableBody.appendChild(newRow);
+        });
+    }
+
+    // fill the table with a consultation on wait
+    function populateConsultationsOnWaitTable() {
+        const tableBody = document.querySelector("#on-wait-table-body");
+
+        // normally there's on but just in case...
+        consultationsOnWait.forEach(consultation => {
+            const newRow = document.createElement("tr");
+            newRow.style.color = "black";
+            newRow.style.background = "white";
+
+            newRow.innerHTML = `
+                <td>${consultation.mediumFirstName} <b>${consultation.mediumLastName}</b></td>
+                <td>${consultation.date}</td>
+                <td>${consultation.client}</td>
+                <td>${consultation.status}</td>
+                <td><a href="#" class="btn">Voir fiche</a></td>
+            `;
+
+            tableBody.appendChild(newRow);
+        });
+
+
+        $(document).ready(function () {
+            $('#startConsultation').on('click', function () { // Fonction appelée lors du clic sur le bouton
+                console.log("clic sur le bouton d'inscription"); // LOG dans Console Javascript
+                // Récupération de la valeur des champs du formulaire
+                var onWaitConsultationId = consultationsOnWait[0].id;
+
+                // Appel AJAX
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'startConsultation',
+                        consultationId: onWaitConsultationId,
+                    },
+                    dataType: 'json'
+                })
+                    .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('', response); // LOG dans Console Javascript
+                        if (response.success) {
+                            $('#notification').html("Inscription OK");
+                            document.location.href = "login.html";
+                        }
+                        else {
+                            $('#notification').html("Erreur d'inscription: " + response.message);
+                            $('#submit').prop('disabled', false);
+
+                        }
+                    })
+                    .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error', error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                        $('#submit').prop('disabled', false);
+                    })
+                    .always(function () { // Fonction toujours appelée
+
+                    });
+            });
+        });
+    }
+
+    // Call the function to populate the table on page load
+    document.addEventListener("DOMContentLoaded", populateConsultationsHistoryTable);
+    document.addEventListener("DOMContentLoaded", populateConsultationsOnWaitTable);
+
+</script>
+
+
+</html>

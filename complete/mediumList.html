@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Employee</title>
+    <!-- Librairie Javascript: jQuery (v3.4.1) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mediums</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+
+<body>
+    <script>
+        // Get the profile to check if we can be here
+        $.ajax({
+            url: './ActionServlet',
+            method: 'POST',
+            data: {
+                "todo": "getProfile"
+            },
+            dataType: 'json'
+        })
+            .done(function (response) {
+                console.log('Response', response);
+                if (response.logged_in) {
+                    console.log("Connected as " + response.person.first_name);
+                    if (response.client_type === "client") {
+                        console.log("Employee");
+                    } else {
+                        alert("vous n'êtes pas un client");
+                        console.log("Not an employee");
+                        window.location = "login.html";
+                    }
+                } else {
+                    alert("vous n'êtes pas connecté");
+                    console.log("Not connected");
+                    window.location = "login.html";
+                }
+            })
+    </script>
+
+    <div class="header"
+         style="display: flex; flex-direction: row; justify-content: space-between; color: white">
+        <a href="index.html" class="logo">
+            <div style="display: flex; flex-direction: row; height: 100%; align-items: center">
+                <div>
+                    <img class="circular-image" src="../static/logo.png" alt="Circular Image">
+                </div>
+                <div>
+                    Predictif
+                </div>
+            </div>
+        </a>
+        <div>
+            <a class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+                Tableau de bord
+            </a>
+            <a class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+                Statistiques
+            </a>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+            <a class="btn-secondary" style="margin-right: 10px">Deconnexion</a>
+            <a href="selfProfile.html">
+                <img src="../static/medium-example2.png" style="border-radius: 50%; height: 36px; width: 36px" alt="Avatar">
+            </a>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <h1 class="headline">
+            Consultation des mediums
+        </h1>
+
+
+        <div class="medium-card-container">
+            <div class="medium-card">
+                <img src="../static/medium-example2.png" alt="Astrologer Mr M">
+                <div class="medium-card-content">
+                    <div> </div>
+                    <div style="width: 100%; display: flex; align-items: flex-start;  flex-direction: column; margin: 5px;">
+                        <div style="font-size: 24px"> <b>Justin Canto</b> </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Support:</b>
+                            A description of what the medium uses
+                        </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Presentation:</b>
+                            A presentation of the medium
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                        <button class="btn">Demander consultation</button>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-card">
+                <img src="../static/medium-example2.png" alt="Astrologer Mr M">
+                <div class="medium-card-content">
+                    <div> </div>
+                    <div style="width: 100%; display: flex; align-items: flex-start;  flex-direction: column; margin: 5px;">
+                        <div style="font-size: 24px"> <b>Justin Canto</b> </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Support:</b>
+                            A description of what the medium uses
+                        </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Presentation:</b>
+                            A presentation of the medium
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                        <button class="btn">Demander consultation</button>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-card">
+                <img src="../static/medium-example2.png" alt="Astrologer Mr M">
+                <div class="medium-card-content">
+                    <div> </div>
+                    <div style="width: 100%; display: flex; align-items: flex-start;  flex-direction: column; margin: 5px;">
+                        <div style="font-size: 24px"> <b>Justin Canto</b> </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Support:</b>
+                            A description of what the medium uses
+                        </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Presentation:</b>
+                            A presentation of the medium
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                        <button class="btn">Demander consultation</button>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-card">
+                <img src="../static/medium-example2.png" alt="Astrologer Mr M">
+                <div class="medium-card-content">
+                    <div> </div>
+                    <div style="width: 100%; display: flex; align-items: flex-start;  flex-direction: column; margin: 5px;">
+                        <div style="font-size: 24px"> <b>Justin Canto</b> </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Support:</b>
+                            A description of what the medium uses
+                        </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Presentation:</b>
+                            A presentation of the medium
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                        <button class="btn">Demander consultation</button>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-card">
+                <img src="../static/medium-example2.png" alt="Astrologer Mr M">
+                <div class="medium-card-content">
+                    <div> </div>
+                    <div style="width: 100%; display: flex; align-items: flex-start;  flex-direction: column; margin: 5px;">
+                        <div style="font-size: 24px"> <b>Justin Canto</b> </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Support:</b>
+                            A description of what the medium uses
+                        </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Presentation:</b>
+                            A presentation of the medium
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                        <button class="btn">Demander consultation</button>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-card">
+                <img src="../static/medium-example2.png" alt="Astrologer Mr M">
+                <div class="medium-card-content">
+                    <div> </div>
+                    <div style="width: 100%; display: flex; align-items: flex-start;  flex-direction: column; margin: 5px;">
+                        <div style="font-size: 24px"> <b>Justin Canto</b> </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Support:</b>
+                            A description of what the medium uses
+                        </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Presentation:</b>
+                            A presentation of the medium
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                        <button class="btn">Demander consultation</button>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-card">
+                <img src="../static/medium-example2.png" alt="Astrologer Mr M">
+                <div class="medium-card-content">
+                    <div> </div>
+                    <div style="width: 100%; display: flex; align-items: flex-start;  flex-direction: column; margin: 5px;">
+                        <div style="font-size: 24px"> <b>Justin Canto</b> </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Support:</b>
+                            A description of what the medium uses
+                        </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Presentation:</b>
+                            A presentation of the medium
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                        <button class="btn">Demander consultation</button>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-card">
+                <img src="../static/medium-example2.png" alt="Astrologer Mr M">
+                <div class="medium-card-content">
+                    <div> </div>
+                    <div style="width: 100%; display: flex; align-items: flex-start;  flex-direction: column; margin: 5px;">
+                        <div style="font-size: 24px"> <b>Justin Canto</b> </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Support:</b>
+                            A description of what the medium uses
+                        </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Presentation:</b>
+                            A presentation of the medium
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                        <button class="btn">Demander consultation</button>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-card">
+                <img src="../static/medium-example2.png" alt="Astrologer Mr M">
+                <div class="medium-card-content">
+                    <div> </div>
+                    <div style="width: 100%; display: flex; align-items: flex-start;  flex-direction: column; margin: 5px;">
+                        <div style="font-size: 24px"> <b>Justin Canto</b> </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Support:</b>
+                            A description of what the medium uses
+                        </div>
+                        <div style="font-size: 14px; color: #9CA3AF">
+                            <b style="color: white">Presentation:</b>
+                            A presentation of the medium
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                        <button class="btn">Demander consultation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function requestConsultation(id) {
+            console.log('Requesting session for medium', id);
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    "todo": "requestConsultation",
+                    "mediumId": id
+                },
+                dataType: 'json'
+            })
+                .done(function (response) {
+                    console.log('Response on submit', response);
+                    if (response.success) {
+                        alert("Session demandée avec succès");
+                        document.location.href = "index.html";
+                    } else {
+                        alert(response.message);
+                    }
+                })
+        }
+
+        $(document).ready(function () {
+            // Fill the table with the mediums dynamically
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    "todo": "getMediums",
+                },
+                dataType: 'json'
+            })
+                .done(function (response) {
+                    console.log('Response on submit', response);
+                    let mediums = response.mediums;
+                    let mediumContainer = $('.medium-container');
+                    let cardContainer = $('.card-container');
+                    cardContainer.empty();
+                    mediumContainer.empty();
+                    for (var i = 0; i < mediums.length; i++) {
+                        let med = mediums[i];
+                        // let medium = $('<div>').attr('class', 'medium');
+                        // let name = $('<p>').text(med.name);
+                        // let gender = $('<p>').text(med.gender);
+                        // let presentation = $('<p>').text(med.presentation);
+                        // let id = $('<p>').text(med.id);
+                        // let button = $('<button>').text('Demander une session');
+                        // button.on('click', function () {
+                        //     requestConsultation(med.id);
+                        // });
+                        // medium.append(id);
+                        // medium.append(name);
+                        // medium.append(gender);
+                        // medium.append(presentation);
+                        // medium.append(button);
+                        // mediumContainer.append(medium);
+                        var card = $('<div>').attr('class', 'card');
+                        var img = $('<img>').attr('src', 'https://i1.rgstatic.net/ii/profile.image/279571216781312-1443666380188_Q512/Vasile-Marian-Scuturici.jpg').attr('alt', 'Astrologer ' + med.name); // Adjust image source as needed
+                        var cardContent = $('<div>').attr('class', 'card-content');
+
+                        var contentWrapper = $('<div>').css({
+                            width: '100%',
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            flexDirection: 'column',
+                            margin: '5px'
+                        });
+
+                        var name = $('<div>').css('fontSize', '24px').html('<b>' + med.name + '</b>');
+                        var support = $('<div>').css({
+                            fontSize: '14px',
+                            color: '#9CA3AF'
+                        }).html('<b style="color: white">Support:</b> ' + med.support);
+                        var presentation = $('<div>').css({
+                            fontSize: '14px',
+                            color: '#9CA3AF'
+                        }).html('<b style="color: white">Presentation:</b> ' + med.presentation);
+
+                        contentWrapper.append(name);
+                        contentWrapper.append(support);
+                        contentWrapper.append(presentation);
+
+                        var buttonWrapper = $('<div>').css({ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' });
+                        var button = $('<button>').attr('class', 'btn').text('Demander consultation');
+                        button.on('click', function () {
+                            requestConsultation(med.id);
+                        });
+
+                        buttonWrapper.append(button);
+                        cardContent.append(contentWrapper);
+                        cardContent.append(buttonWrapper);
+
+                        card.append(img);
+                        card.append(cardContent);
+
+                        cardContainer.append(card);
+                    }
+                })
+        });
+    </script>
+</body>
+
+</html>

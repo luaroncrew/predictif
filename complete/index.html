@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Predictif</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+
+<body>
+<div class="header">
+    <div class="logo">
+        <div style="display: flex; flex-direction: row; height: 100%; align-items: center">
+            <div>
+                <img class="circular-image" src="../static/logo.png" alt="Circular Image">
+            </div>
+            <div>
+                Predictif
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="login.html" class="btn-secondary">Connexion</a>
+        <a href="signUp.html" class="btn">S'inscrire</a>
+    </div>
+</div>
+<div class="main-container">
+    <div>
+        <div class="headline">
+            <h1 style="font-family: 'Mystery Quest';">Predictif</h1>
+            <p> <i> On ne vous arnaque pas. Vous vous faites arnaqués vous-memes. </i> </p>
+        </div>
+    </div>
+    <h2 align="center">Nos mediums</h2>
+    <div class="grid-wrapper">
+        <div>
+            <img src="../static/medium-example.png" alt="" />
+        </div>
+        <div>
+            <img src="../static/medium-example.png" alt="" />
+        </div>
+        <div class="tall">
+            <img src="../static/medium-example.png" alt="" />
+        </div>
+        <div class="tall">
+            <img src="https://images.unsplash.com/photo-1588453862014-cd1a9ad06a12?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=634&amp;q=80" alt="" />
+        </div>
+        <div>
+            <img src="https://images.unsplash.com/photo-1588414734732-660b07304ddb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=675&amp;q=80" alt="" />
+        </div>
+        <div>
+            <img src="https://images.unsplash.com/photo-1588224575346-501f5880ef29?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="" />
+        </div>
+        <div>
+            <img src="https://images.unsplash.com/photo-1574798834926-b39501d8eda2?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="" />
+        </div>
+        <div>
+            <img src="https://images.unsplash.com/photo-1547234935-80c7145ec969?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1353&amp;q=80" alt="" />
+        </div>
+        <div class="wide">
+            <img src="https://images.unsplash.com/photo-1588263823647-ce3546d42bfe?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=675&amp;q=80" alt="" />
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: './ActionServlet',
+            method: 'POST',
+            data: {
+                todo: 'getMediums',
+            },
+            dataType: 'json'
+        })
+            // Display the mediums, it's a list of mediums
+            .done(function (response) {
+                console.log('Response on submit', response);
+                var mediums = response.mediums;
+                var mediumDisplay = $('#medium-display');
+                mediumDisplay.empty();
+                for (var i = 0; i < mediums.length; i++) {
+                    var medium = mediums[i];
+                    var img = $('<img>').attr('src', 'https://liris.cnrs.fr/mehdi.kaytoue/tmp-pfe/thumbs/Maranzana.jpg');
+                    img.attr('alt', medium.name);
+                    img.attr('title', medium.name);
+                    var div = $('<div>').append(img);
+                    // Add a random class to the div
+                    var classes = ['tall', 'wide', 'big', ''];
+                    var randomClass = classes[Math.floor(Math.random() * classes.length)];
+                    div.addClass(randomClass);
+                    mediumDisplay.append(div);
+                }
+            })
+    });
+</script>
+
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Employee</title>
+    <!-- Librairie Javascript: jQuery (v3.4.1) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mediums</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+
+<body>
+<script>
+    // Get the profile to check if we can be here
+    $.ajax({
+        url: './ActionServlet',
+        method: 'POST',
+        data: {
+            "todo": "getProfile"
+        },
+        dataType: 'json'
+    })
+        .done(function (response) {
+            console.log('Response', response);
+            if (response.logged_in) {
+                console.log("Connected as " + response.person.first_name);
+                if (response.client_type === "client") {
+                    console.log("Employee");
+                } else {
+                    alert("vous n'êtes pas un client");
+                    console.log("Not an employee");
+                    window.location = "login.html";
+                }
+            } else {
+                alert("vous n'êtes pas connecté");
+                console.log("Not connected");
+                window.location = "login.html";
+            }
+        })
+</script>
+
+<div class="header"
+     style="display: flex; flex-direction: row; justify-content: space-between; color: white">
+    <a href="index.html" class="logo">
+        <div style="display: flex; flex-direction: row; height: 100%; align-items: center">
+            <div>
+                <img class="circular-image" src="../static/logo.png" alt="Circular Image">
+            </div>
+            <div>
+                Predictif
+            </div>
+        </div>
+    </a>
+    <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+        <a class="btn-secondary" style="margin-right: 10px">Deconnexion</a>
+        <a href="selfProfile.html">
+            <img src="../static/medium-example2.png" style="border-radius: 50%; height: 36px; width: 36px" alt="Avatar">
+        </a>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="four-circles-layout">
+        <div class="circle-container">
+            <img src="../static/astral-profile.png" class="circle" alt="Avatar">
+            <label><b>Signe de zodiac</b></label>
+        </div>
+        <div class="circle-container">
+            <img src="../static/astral-dragon.png" class="circle" alt="Avatar">
+            <label><b>Signe astrologique chinois</b></label>
+        </div>
+        <div class="circle-container">
+            <img src="../static/astral-capybara.png" class="circle" alt="Avatar">
+            <label><b>Animal totem</b></label>
+        </div>
+        <div class="circle-container">
+            <img src="../static/astral-color-pink.png" class="circle" alt="Avatar">
+            <label><b>Couleur porte bonheur</b></label>
+        </div>
+    </div>
+    <h1 class="headline"> Historique de voyances</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Medium</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody
+                    id="history-table-body"
+                    style="border-bottom-left-radius: 4px;
+                    border-bottom-right-radius: 4px">
+            </tbody>
+        </table>
+    </div>
+    <div style="width: 100%; display: flex; flex-direction: row; justify-content: flex-start">
+        <a href="mediumList.html" class="btn">
+            Demarrer la consultation
+        </a>
+    </div>
+
+</div>
+
+
+
+<script>
+    const DEBUG = true;
+
+    const MOCK_CONSULTATIONS = [
+        {
+            "medium_name": "Eric Cartman",
+            "start_date": "2024-06-01",
+            "end_date": null
+        },
+        {
+            "medium_name": "Kyle Broflovski",
+            "start_date": "2024-06-02",
+            "end_date": "2024-06-02"
+        },
+        {
+            "medium_name": "Kenny McCormick",
+            "start_date": "2024-06-04",
+            "end_date": "2024-06-04"
+        },
+        {
+            "medium_name": "Butters Stotch",
+            "start_date": "2024-06-05",
+            "end_date": "2024-06-05"
+        },
+        {
+            "medium_name": "Randy Marsh",
+            "start_date": "2024-06-06",
+            "end_date": "2024-06-06"
+        },
+        {
+            "medium_name": "Wendy Testaburger",
+            "start_date": "2024-06-07",
+            "end_date": "2024-06-07"
+        },
+        {
+            "medium_name": "Chef",
+            "start_date": "2024-06-08",
+            "end_date": "2024-06-08"
+        },
+        {
+            "medium_name": "Mr. Garrison",
+            "start_date": "2024-06-09",
+            "end_date": "2024-06-09"
+        }
+    ]
+
+    function requestConsultation(id) {
+        console.log('Requesting session for medium', id);
+        $.ajax({
+            url: './ActionServlet',
+            method: 'POST',
+            data: {
+                "todo": "requestConsultation",
+                "mediumId": id
+            },
+            dataType: 'json'
+        })
+            .done(function (response) {
+                console.log('Response on submit', response);
+                if (response.success) {
+                    alert("Session demandée avec succès");
+                    document.location.href = "index.html";
+                } else {
+                    alert(response.message);
+                }
+            })
+    }
+
+    $(document).ready(function () {
+        if (DEBUG) {
+            var curr_table = $("#history-table-body");
+            MOCK_CONSULTATIONS.forEach(consultation => {
+                let newRow = document.createElement("tr");
+                newRow.style.color = "black";
+                newRow.style.background = "white";
+
+                let status = "En attente";
+                let style = "waiting";
+                if (consultation.end_date != null) {
+                    status = "Fini";
+                    style = "completed";
+                } else if (consultation.start_date != null) {
+                    status = "En cours";
+                    style = "in-progress";
+                }
+
+                newRow.innerHTML = `
+                                <td><b>${consultation.medium_name}</b></td>
+                                <td class="consultation-description">${consultation.start_date || "N/A"}</td>
+                                <td>
+                                    <div class="consultation-status-label ${style}">
+                                        ${status}
+                                    </div>
+                                </td>
+                            `;
+                curr_table.append(newRow);
+            });
+        }
+
+        // Fill the table with the consultations dynamically
+        $.ajax({
+            url: './ActionServlet',
+            method: 'POST',
+            data: {
+                "todo": "getConsultations"
+            },
+            cache: false,
+            dataType: 'json'
+        })
+            .done(function (response) {
+                console.log('Response', response);
+                if (DEBUG) {
+                    response = {consultations: MOCK_CONSULTATIONS};
+                }
+                if (response.consultations) {
+                    console.log("Consultations", response.consultations);
+                    var curr_table = $("#history-table-body");
+                    response.consultations.forEach(consultation => {
+                        let newRow = document.createElement("tr");
+                        newRow.style.color = "black";
+                        newRow.style.background = "white";
+
+                        let status = "En attente";
+                        if (consultation.end_date != null) {
+                            status = "Fini";
+                        } else if (consultation.start_date != null) {
+                            status = "En cours";
+                        }
+
+                        newRow.innerHTML = `
+                                <td ><b>${consultation.medium_name}</b></td>
+                                <td class="consultation-description">${consultation.start_date || "N/A"}</td>
+                                <td class="consultation-description">${status}</td>
+                            `;
+
+                        curr_table.append(newRow);
+                    });
+                }
+            })
+    });
+</script>
+</body>
+
+</html>

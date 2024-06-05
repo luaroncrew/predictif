@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div class="header"
+         style="display: flex; flex-direction: row; justify-content: space-between; color: white">
+        <a href="index.html" class="logo">
+            <div style="display: flex; flex-direction: row; height: 100%; align-items: center">
+                <div>
+                    <img class="circular-image" src="../static/logo.png" alt="Circular Image">
+                </div>
+                <div>
+                    Predictif
+                </div>
+            </div>
+        </a>
+        <div>
+            <a href="indexEmployee.html" class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+                Tableau de bord
+            </a>
+            <a class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+                Statistiques
+            </a>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+            <a class="btn-secondary" style="margin-right: 10px">Deconnexion</a>
+            <a href="selfProfile.html">
+                <img src="../static/medium-example2.png" style="border-radius: 50%; height: 36px; width: 36px" alt="Avatar">
+            </a>
+        </div>
+    </div>
+    <div class="main-container">
+        <h1 class="headline">Mes informations</h1>
+        <div class="sign-up-fields-container">
+            <div class="inputs-column">
+                <div class="input-field-container">
+                    <label><b>Prénom</b></label>
+                    <input
+                            type="text"
+                            disabled
+                            id="firstName"
+                            name="prenom"
+                            readonly
+                            value="kiki"
+                            required
+                            class="predictif-input-field">
+                    <label class="input-label-additional-info">Entrer votre prénom</label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Email</b></label>
+                    <input
+                            readonly
+                            disabled
+                            class="predictif-input-field"
+                            type="email"
+                            id="email"
+                            name="email"
+                            value="lekikidu69@insa-lyon.fr"
+                            required>
+                    <label class="input-label-additional-info">Entrer votre email</label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Téléphone</b></label>
+                    <input
+                            readonly
+                            disabled
+                            class="predictif-input-field"
+                            type="tel"
+                            id="phoneNumber"
+                            name="telephone"
+                            value="0600000110"
+                            required
+                            pattern="[0-9]{10}">
+
+                    <label class="input-label-additional-info">Entrer votre téléphone</label>
+                </div>
+            </div>
+            <div class="inputs-column">
+                <div class="input-field-container">
+                    <label><b>Nom</b></label>
+                    <input
+                            readonly
+                            disabled
+                            class="predictif-input-field"
+                            type="text"
+                            id="surname"
+                            name="nom"
+                            value="makarov"
+                            required>
+                    <label class="input-label-additional-info">Entrer votre nom</label>
+                </div>
+
+                <div class="input-field-container">
+                    <label><b>Date de naissance</b></label>
+                    <input
+                            readonly
+                            disabled
+                            class="predictif-input-field"
+                            type="date"
+                            id="birthDate"
+                            name="date_naissance"
+                            value="2003-12-12"
+                            required>
+
+                    <label class="input-label-additional-info">Entrer votre date de naissance</label>
+                </div>
+
+
+                <div class="input-field-container">
+                    <label><b>Adresse</b></label>
+                    <input
+                            readonly
+                            disabled
+                            class="predictif-input-field"
+                            type="text"
+                            id="address"
+                            name="adresse"
+                            value="20 Av. Albert Einstein, 69100 Villeurbanne"
+                            required>
+                    <label class="input-label-additional-info">Entrer votre adresse</label>
+                </div>
+
+                <div class="input-field-container">
+                    <label><b>Genre</b></label>
+                    <select
+                            readonly
+                            disabled
+                            class="predictif-input-field"
+                            id="gender"
+                            name="genre"
+                            required>
+                        <option value="male">Masculin</option>
+                        <option value="female">Féminin</option>
+                        <option value="Kirill">Kirill</option>
+                        <option value="pas decidé">Pas decidé</option>
+                        <option value="En cours...">En cours...</option>
+                        <option value="other">Autre</option>
+                        <option value="prefer_not_to_say">Préfère ne pas dire</option>
+                    </select>
+                    <label class="input-label-additional-info">Choisir votre genre</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

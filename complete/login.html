@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <!-- Librairie Javascript: jQuery (v3.4.1) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+
+<body>
+    <div class="header">
+        <a href="index.html" class="logo">
+            <div style="display: flex; flex-direction: row; height: 100%; align-items: center">
+                <div>
+                    <img class="circular-image" src="../static/logo.png" alt="Circular Image">
+                </div>
+                <div>
+                    Predictif
+                </div>
+            </div>
+        </a>
+        <div>
+            <a href="login.html" class="btn-secondary">Connexion</a>
+            <a href="signUp.html" class="btn">S'inscrire</a>
+        </div>
+    </div>
+    <div class="main-container">
+        <h1 class="headline" style="margin-top: 40px">Se connecter</h1>
+
+        <!-- Paragraphe avec id="notification" pour les messages de notification -->
+
+        <!-- Champs et Bouton de Formulaire -->
+        <div class="input-field-container">
+            <label> <b>Email</b></label>
+            <input class="predictif-input-field" type="text" id="champ-login" size="40" />
+            <label class="input-label-additional-info">Entrez votre email</label>
+
+        </div>
+        <div class="input-field-container">
+            <label> <b>Mot de passe</b></label>
+            <input class="predictif-input-field" type="password" id="champ-password" />
+            <label class="input-label-additional-info">Entrez votre mot de passe</label>
+        </div>
+
+        <div style="display: flex; flex-direction: row; width: 350px; justify-content: flex-end">
+            <button class="btn" id="bouton-connexion">Connexion</button>
+        </div>
+
+
+        <p
+                id="notification"
+                class="notification"
+                style="margin-top: 100px" >
+            Veuillez saisir votre identifiant (adresse mail) et votre mot de passe.</p>
+
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('#bouton-connexion').on('click', function () { // Fonction appelée lors du clic sur le bouton
+
+            console.log("clic sur le bouton de connexion"); // LOG dans Console Javascript
+            $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
+
+            // Récupération de la valeur des champs du formulaire
+            var champLogin = $('#champ-login').val();
+            var champPassword = $('#champ-password').val();
+
+            // Appel AJAX
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    todo: 'login',
+                    email: champLogin,
+                    password: champPassword
+                },
+                dataType: 'json'
+            })
+                .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                    console.log('Response', response); // LOG dans Console Javascript
+                    if (response.connected) {
+                        $('#notification').html("Connexion OK (" + response.person.first_name + ")");  // Message pour le paragraphe de notification
+                        alert("Connecté en tant que " + response.person.first_name);
+                        document.location.href = "index.html";
+                    }
+                    else {
+                        $('#notification').html("Erreur de Connexion, identifiants invalide"); // Message pour le paragraphe de notification
+                    }
+                })
+                .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                    console.log('Error', error); // LOG dans Console Javascript
+                    alert("Erreur lors de l'appel AJAX");
+                })
+                .always(function () { // Fonction toujours appelée
+
+                });
+        });
+    });
+</script>
+
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Consultation profil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="../static/styles.css">
+    <style>
+
+
+        .header {
+            text-align: center;
+        }
+
+
+        .information div {
+            padding: 10px;
+            background: #eee;
+            border-radius: 8px;
+        }
+
+        .information label {
+            font-weight: bold;
+        }
+
+
+        .sign img {
+            width: 100%;
+            border-radius: 50%;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <script>
+        // Get the profile to check if we can be here
+        $.ajax({
+            url: './ActionServlet',
+            method: 'POST',
+            data: {
+                "todo": "getProfile"
+            },
+            dataType: 'json'
+        })
+            .done(function (response) {
+                console.log('Response', response);
+                if (response.logged_in) {
+                    console.log("Connected as " + response.person.first_name);
+                    if (response.client_type === "employee") {
+                        console.log("Employee");
+                    } else {
+                        alert("vous n'êtes pas un employé");
+                        console.log("Not an employee");
+                        window.location = "login.html";
+                    }
+                } else {
+                    alert("vous n'êtes pas connecté");
+                    console.log("Not connected");
+                    window.location = "login.html";
+                }
+            })
+    </script>
+
+    <div class="header"
+         style="display: flex; flex-direction: row; justify-content: space-between; color: white">
+        <a href="index.html" class="logo">
+            <div style="display: flex; flex-direction: row; height: 100%; align-items: center">
+                <div>
+                    <img class="circular-image" src="../static/logo.png" alt="Circular Image">
+                </div>
+                <div>
+                    Predictif
+                </div>
+            </div>
+        </a>
+        <div>
+            <a class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+                Tableau de bord
+            </a>
+            <a class="btn-secondary" style="margin-left: 10px; margin-right: 10px">
+                Statistiques
+            </a>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+            <a class="btn-secondary" style="margin-right: 10px">Deconnexion</a>
+            <a href="selfProfile.html">
+                <img src="../static/medium-example2.png" style="border-radius: 50%; height: 36px; width: 36px" alt="Avatar">
+            </a>
+        </div>
+    </div>
+
+    <div class="main-container" style="align-items: start">
+
+        <div style="width: 100%; display: flex; justify-content: flex-start; flex-direction: row">
+            <div id="error" class="error"></div>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: flex-start; flex-direction: row">
+            <div class="profile-consultation-headline">
+                <b>
+                    <label class="profile-consultation-label">Consultation Profil - </label>
+                    <label class="profile-consultation-name" id="clientName">Jean Dupont</label>
+                </b>
+            </div>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: flex-start; flex-direction: row">
+            <h2><b>Son profil astral</b></h2>
+        </div>
+        <div class="four-circles-layout">
+            <div class="circle-container">
+                <img src="../static/astral-profile.png" class="circle" alt="Avatar">
+                <label id="zodiac_sign"><b>Signe de zodiac</b></label>
+            </div>
+            <div class="circle-container">
+                <img src="../static/astral-dragon.png" class="circle" alt="Avatar">
+                <label id="chinese_sign"><b>Signe astrologique chinois</b></label>
+            </div>
+            <div class="circle-container">
+                <img src="../static/astral-capybara.png" class="circle" alt="Avatar">
+                <label id="totem_animal"><b>Animal totem</b></label>
+            </div>
+            <div class="circle-container">
+                <img src="../static/astral-color-pink.png" class="circle" alt="Avatar">
+                <label id="color"><b>Couleur porte bonheur</b></label>
+            </div>
+        </div>
+        <h2 style="margin-bottom: 30px"> <b>Informations client</b> </h2>
+        <div class="sign-up-fields-container">
+            <div class="inputs-column">
+                <div class="input-field-container">
+                    <label><b>Prénom</b></label>
+                    <label
+                            id="firstName"
+                            class="predictif-input-field">
+                    </label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Email</b></label>
+                    <label
+                            class="predictif-input-field"
+                            id="email">
+                    </label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Téléphone</b></label>
+                    <label
+                            class="predictif-input-field"
+                            id="phone"
+                            >
+                    </label>
+                </div>
+            </div>
+            <div class="inputs-column">
+                <div class="input-field-container">
+                    <label><b>Nom</b></label>
+                    <label
+                            class="predictif-input-field"
+                            id="lastName">
+                    </label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Date de naissance</b></label>
+                    <label
+                            class="predictif-input-field"
+                            id="birthDate"
+                            >
+                    </label>
+                </div>
+                <div class="input-field-container">
+                    <label><b>Adresse</b></label>
+                    <label
+                            class="predictif-input-field"
+                            id="address"
+                            >
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div style="width: 100%; display: flex; justify-content: flex-start; flex-direction: row">
+            <h2><b>Aide à prediction</b></h2>
+        </div>
+
+        <div>
+
+        </div>
+
+        <div class="predictions">
+            <div class="input-field-container">
+                <label><b>Amour</b></label>
+                <select
+                        class="predictif-input-field"
+                        id="love"
+                        style="height: 30px; width: 100px"
+                >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="input-field-container">
+                <label><b>Travail</b></label>
+                <select
+                        class="predictif-input-field"
+                        id="work"
+                        style="height: 30px; width: 100px"
+                >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="input-field-container">
+                <label><b>Santé</b></label>
+                <select
+                        class="predictif-input-field"
+                        id="health"
+                        style="height: 30px; width: 100px"
+                >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <button class="btn" id="predictButton">Récupérer les prédictions</button>
+            <div id="predictionsResult"></div>
+            <h2>Commentaires</h2>
+        </div>
+        <div id="comment-div" style="display: none;">
+            <textarea id="comment" placeholder="Laisser un commentaire..."></textarea>
+            <button id="endWithCommentButton">Finir la session et ajouter un commentaire</button>
+        </div>
+        <h2 style="color: black">Historique des consultations</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medium</th>
+                        <th>Date</th>
+                        <th>Commentaire</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="history-table-body" style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const DEBUG = true;
+
+        const MOCK_DATA = {
+            love: 4,
+            work: 5,
+            health: 0,
+            profile: {
+                first_name: "Eric",
+                last_name: "Cartman",
+                mail: "eric.cartman@south.park",
+                address: "25 Denver Avenue, South Park",
+                phone: "555-555-5555",
+                birth_date: "2003-12-12",
+                astral_profile: {
+                    zodiac_sign: "Butters",
+                    chinese_sign: "Kenny",
+                    totem_animal: "Stan",
+                    color: "orange"
+                },
+                consultations: [
+                    {
+                        medium_name: "Eric Cartman",
+                        start_date: "2024-06-01",
+                        end_date: "2024-06-01",
+                        comment: "I'm super cereal"
+                    },
+                    {
+                        medium_name: "Kyle Broflovski",
+                        start_date: "2024-06-02",
+                        end_date: "2024-06-02",
+                        comment: "You bastards!"
+                    },
+                    {
+                        medium_name: "Kenny McCormick",
+                        start_date: "2024-06-03",
+                        end_date: "2024-06-03",
+                        comment: "Mmmph mmmph!"
+                    }
+                ]
+            },
+        }
+
+        if (DEBUG) {
+             const data = MOCK_DATA
+            $('#firstName').text(data.profile.first_name || 'Non disponible');
+            $('#lastName').text(data.profile.last_name || 'Non disponible');
+            $('#email').text(data.profile.mail || 'Non disponible');
+            $('#address').text(data.profile.address || 'Non disponible');
+            $('#phone').text(data.profile.phone || 'Non disponible');
+            $('#birthDate').text(data.profile.birth_date || 'Non disponible');
+
+            $('#zodiac_sign').text(data.profile.astral_profile.zodiac_sign || 'Non disponible');
+            $('#chinese_sign').text(data.profile.astral_profile.chinese_sign || 'Non disponible');
+            $('#totem_animal').text(data.profile.astral_profile.totem_animal || 'Non disponible');
+            $('#color').text(data.profile.astral_profile.color || 'Non disponible');
+
+            data.profile.consultations.forEach(consultation => {
+                let curr_table = $("#history-table-body");
+                let newRow = document.createElement("tr");
+                newRow.style.color = "black";
+                newRow.style.background = "white";
+
+                let status = "En attente";
+                if (consultation.start_date != null) {
+                    status = "En cours";
+                }
+                if (consultation.end_date != null) {
+                    status = "Terminée";
+                }
+
+                if (consultation.end_date == null && consultation.start_date != null) {
+                    ongoing_consultation_ids.push(consultation.id);
+                    // Makes ongoing consultations stand out
+                    newRow.style.fontWeight = "bold";
+                }
+
+                newRow.innerHTML = `
+                                <td>${consultation.medium_name}</td>
+                                <td>${consultation.start_date || "<i>N/A</i>"}</td>
+                                <td>${consultation.comment || "<i>N/A</i>"}</td>
+                                <td>${status}</td>
+                            `;
+                curr_table.append(newRow);
+            })
+        }
+
+        $(document).ready(function () {
+            var client_id = new URLSearchParams(window.location.search).get('client_id');
+            if (!client_id) {
+                $('#error').text('Aucun identifiant client fourni.');
+                return;
+            }
+
+            // Get client profile
+            let ongoing_consultation_ids = [];
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    todo: "getClientProfile",
+                    client_id: client_id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Client profile', data);
+                    if (data.success && data.profile) {
+                        $('#firstName').text(data.profile.first_name || 'Non disponible');
+                        $('#lastName').text(data.profile.last_name || 'Non disponible');
+                        $('#email').text(data.profile.mail || 'Non disponible');
+                        $('#address').text(data.profile.address || 'Non disponible');
+                        $('#phone').text(data.profile.phone || 'Non disponible');
+                        $('#birthDate').text(data.profile.birth_date || 'Non disponible');
+
+                        $('#zodiac_sign').text(data.profile.astral_profile.zodiac_sign || 'Non disponible');
+                        $('#chinese_sign').text(data.profile.astral_profile.chinese_sign || 'Non disponible');
+                        $('#totem_animal').text(data.profile.astral_profile.totem_animal || 'Non disponible');
+                        $('#color').text(data.profile.astral_profile.color || 'Non disponible');
+
+                        data.profile.consultations.forEach(consultation => {
+                            let curr_table = $("#history-table-body");
+                            let newRow = document.createElement("tr");
+                            newRow.style.color = "black";
+                            newRow.style.background = "white";
+
+                            let status = "En attente";
+                            if (consultation.start_date != null) {
+                                status = "En cours";
+                            }
+                            if (consultation.end_date != null) {
+                                status = "Terminée";
+                            }
+
+                            if (consultation.end_date == null && consultation.start_date != null) {
+                                ongoing_consultation_ids.push(consultation.id);
+                                // Makes ongoing consultations stand out
+                                newRow.style.fontWeight = "bold";
+                            }
+
+                            newRow.innerHTML = `
+                                <td>${consultation.medium_name}</td>
+                                <td>${consultation.start_date || "<i>N/A</i>"}</td>
+                                <td>${consultation.comment || "<i>N/A</i>"}</td>
+                                <td>${status}</td>
+                            `;
+                            curr_table.append(newRow);
+                        });
+                    } else {
+                        $('#error').text(data.message || 'Erreur lors de la récupération du profil.');
+                    }
+                },
+                error: function () {
+                    $('#error').text('Erreur de connexion au serveur.');
+                }
+            });
+            console.log('Ongoing consultations', ongoing_consultation_ids);
+
+            // End consultation with comment
+            $('#endWithCommentButton').click(function () {
+                var comment = $('#comment').val();
+
+                $(this).prop('disabled', true); // Disable the button during the AJAX call
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET', // Assuming that your API can handle a GET request
+                    data: {
+                        todo: 'endConsultation',
+                        comment: comment
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            alert('Consultation terminée avec succès.');
+                            window.location.reload();
+                        } else {
+                            alert(data.message || 'Erreur lors de la cloture de la consultation.');
+                        }
+                        $(this).prop('disabled', false); // Re-enable the button
+                    },
+                    error: function () {
+                        $('#error').text('Erreur de connexion au serveur.');
+                        $(this).prop('disabled', false); // Re-enable the button
+                    }
+                });
+            });
+
+            // Check if this is the current consultation
+            $.ajax({
+                url: './ActionServlet',
+                method: 'POST',
+                data: {
+                    todo: "getCurrentConsultation",
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Current consultation', data);
+                    if (data.success && ongoing_consultation_ids.includes(data.consultation.id) && data.consultation.start_date != null) {
+                        $('#comment-div').show();
+                    } else {
+                        //$('#comment-div').hide();
+                    }
+                }
+            });
+
+            // Get predictions
+            $('#predictButton').click(function () {
+                var love = $('#love').val();
+                var work = $('#work').val();
+                var health = $('#health').val();
+
+                $(this).prop('disabled', true); // Disable the button during the AJAX call
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'GET', // Assuming that your API can handle a GET request
+                    data: {
+                        todo: 'getPredictions',
+                        client_id: client_id,
+                        love: love,
+                        work: work,
+                        health: health
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            var result = `<p><strong>Amour:</strong> ${data.love}</p>
+                                          <p><strong>Travail:</strong> ${data.work}</p>
+                                          <p><strong>Santé:</strong> ${data.health}</p>`;
+                            $('#predictionsResult').html(result);
+                        } else {
+                            $('#error').text(data.message || 'Erreur lors de la récupération des prédictions.');
+                        }
+                    },
+                    error: function () {
+                        $('#error').text('Erreur de connexion au serveur.');
+                    },
+                    always: function () {
+                        $('#predictButton').prop('disabled', false); // Re-enable the button
+                    }
+                });
+            });
+
+            // Enable button only when everything is loaded
+            $('#predictButton').prop('disabled', false);
+        });
+    </script>
+</body>
+
+</html>
